@@ -23,7 +23,7 @@ go mod tidy
 - Cobra Command
 - DB Migration
 
-## Migration
+## DB Migration
 Migrate
 -
 ```bash
