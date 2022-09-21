@@ -15,8 +15,8 @@ type History struct {
 	Prepayment    int       `json:"prepayment"`
 	PaymentStatus string    `json:"payment_status"`
 	ReturnStatus  string    `json:"return_status"`
-	CreatedAt     time.Time `json:"created_at"`
-	UpdatedAt     time.Time `json:"updated_at"`
+	CreatedAt     time.Time `gorm:"default:current_timestamp" json:"created_at"`
+	UpdatedAt     time.Time `gorm:"default:current_timestamp" json:"updated_at"`
 }
 
 type Histories []History

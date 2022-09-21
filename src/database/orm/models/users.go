@@ -15,8 +15,8 @@ type User struct {
 	MobileNumber string    `json:"mobile_number,omitempty"`
 	DisplayName  string    `json:"display_name,omitempty"`
 	BirthDate    string    `json:"birth_date,omitempty"`
-	CreatedAt    time.Time `json:"created_at"`
-	UpdatedAt    time.Time `json:"updated_at"`
+	CreatedAt    time.Time `gorm:"default:current_timestamp" json:"created_at"`
+	UpdatedAt    time.Time `gorm:"default:current_timestamp" json:"updated_at"`
 }
 
 type Users []User
