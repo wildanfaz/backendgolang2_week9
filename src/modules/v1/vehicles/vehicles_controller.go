@@ -18,8 +18,6 @@ func NewCtrl(svc interfaces.VehiclesService) *vehicles_ctrl {
 }
 
 func (ctrl *vehicles_ctrl) GetAllVehicles(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-
 	data := ctrl.svc.GetAllVehicles()
 
 	if data.IsError != nil {
@@ -30,8 +28,6 @@ func (ctrl *vehicles_ctrl) GetAllVehicles(w http.ResponseWriter, r *http.Request
 }
 
 func (ctrl *vehicles_ctrl) AddVehicle(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-
 	var datas models.Vehicle
 
 	err := json.NewDecoder(r.Body).Decode(&datas)
@@ -49,8 +45,6 @@ func (ctrl *vehicles_ctrl) AddVehicle(w http.ResponseWriter, r *http.Request) {
 }
 
 func (ctrl *vehicles_ctrl) UpdateVehicle(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-
 	var datas models.Vehicle
 
 	err := json.NewDecoder(r.Body).Decode(&datas)
@@ -69,8 +63,6 @@ func (ctrl *vehicles_ctrl) UpdateVehicle(w http.ResponseWriter, r *http.Request)
 }
 
 func (ctrl *vehicles_ctrl) DeleteVehicle(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-
 	var datas models.Vehicle
 
 	vars := mux.Vars(r)
@@ -84,8 +76,6 @@ func (ctrl *vehicles_ctrl) DeleteVehicle(w http.ResponseWriter, r *http.Request)
 }
 
 func (ctrl *vehicles_ctrl) SearchVehicle(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-
 	search := r.URL.Query().Get("vehicle_name")
 	data := ctrl.svc.SearchVehicle(search)
 
@@ -97,8 +87,6 @@ func (ctrl *vehicles_ctrl) SearchVehicle(w http.ResponseWriter, r *http.Request)
 }
 
 func (ctrl *vehicles_ctrl) PopularVehicles(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-
 	data := ctrl.svc.PopularVehicles()
 
 	if data.IsError != nil {

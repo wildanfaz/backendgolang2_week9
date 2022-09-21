@@ -18,8 +18,6 @@ func NewCtrl(svc interfaces.HistoriesService) *histories_ctrl {
 }
 
 func (ctrl *histories_ctrl) GetAllHistories(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-
 	data := ctrl.svc.GetAllHistories()
 
 	if data.IsError != nil {
@@ -30,8 +28,6 @@ func (ctrl *histories_ctrl) GetAllHistories(w http.ResponseWriter, r *http.Reque
 }
 
 func (ctrl *histories_ctrl) AddHistory(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-
 	var datas models.History
 
 	err := json.NewDecoder(r.Body).Decode(&datas)
@@ -49,8 +45,6 @@ func (ctrl *histories_ctrl) AddHistory(w http.ResponseWriter, r *http.Request) {
 }
 
 func (ctrl *histories_ctrl) UpdateHistory(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-
 	var datas models.History
 
 	err := json.NewDecoder(r.Body).Decode(&datas)
@@ -69,8 +63,6 @@ func (ctrl *histories_ctrl) UpdateHistory(w http.ResponseWriter, r *http.Request
 }
 
 func (ctrl *histories_ctrl) DeleteHistory(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-
 	var datas models.History
 
 	vars := mux.Vars(r)
@@ -84,8 +76,6 @@ func (ctrl *histories_ctrl) DeleteHistory(w http.ResponseWriter, r *http.Request
 }
 
 func (ctrl *histories_ctrl) SearchHistory(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-
 	search := r.URL.Query().Get("vehicle_id")
 	data := ctrl.svc.SearchHistory(search)
 

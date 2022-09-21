@@ -25,6 +25,14 @@ func (svc *users_service) GetAllUsers() *libs.Resp {
 }
 
 func (svc *users_service) AddUser(body *models.User) *libs.Resp {
+	hashpassword, errhash := libs.HashingPassword(body.Password)
+
+	if errhash != nil {
+		return libs.Response(nil, 400, "failed hash password", errhash)
+	}
+
+	body.Password = hashpassword
+
 	_, err := svc.repo.SaveUser(body)
 
 	if err != nil {

@@ -18,8 +18,6 @@ func NewCtrl(svc interfaces.UsersService) *users_ctrl {
 }
 
 func (ctrl *users_ctrl) GetAllUsers(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-
 	data := ctrl.svc.GetAllUsers()
 
 	if data.IsError != nil {
@@ -30,8 +28,6 @@ func (ctrl *users_ctrl) GetAllUsers(w http.ResponseWriter, r *http.Request) {
 }
 
 func (ctrl *users_ctrl) AddUser(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-
 	var datas models.User
 
 	err := json.NewDecoder(r.Body).Decode(&datas)
@@ -49,8 +45,6 @@ func (ctrl *users_ctrl) AddUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func (ctrl *users_ctrl) UpdateUser(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-
 	var datas models.User
 
 	err := json.NewDecoder(r.Body).Decode(&datas)
@@ -69,8 +63,6 @@ func (ctrl *users_ctrl) UpdateUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func (ctrl *users_ctrl) DeleteUser(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-
 	var datas models.User
 
 	vars := mux.Vars(r)
@@ -85,8 +77,7 @@ func (ctrl *users_ctrl) DeleteUser(w http.ResponseWriter, r *http.Request) {
 }
 
 // func (re *users_ctrl) SearchUser(w http.ResponseWriter, r *http.Request) {
-// 	w.Header().Set("Content-Type", "application/json")
-
+//
 // 	data, err := re.svc.SearchUser(r)
 
 // 	if err != nil {

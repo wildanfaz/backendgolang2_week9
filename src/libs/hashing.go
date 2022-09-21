@@ -2,8 +2,8 @@ package libs
 
 import "golang.org/x/crypto/bcrypt"
 
-func Hashing(password string) (string, error) {
-	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
+func HashingPassword(password string) (string, error) {
+	bytes, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	return string(bytes), err
 }
 
