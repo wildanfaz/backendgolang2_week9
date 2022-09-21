@@ -41,7 +41,7 @@ func (svc *histories_service) UpdateHistory(vars string, data *models.History) *
 		return libs.Response(nil, 400, "failed update data", err)
 	}
 
-	return libs.Response(nil, 200, "success update data", nil)
+	return libs.Response(nil, 201, "success update data", nil)
 }
 
 func (svc *histories_service) DeleteHistory(vars string, data *models.History) *libs.Resp {

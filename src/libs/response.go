@@ -9,16 +9,14 @@ type Resp struct {
 	Status      int         `json:"status"`
 	Description string      `json:"description"`
 	Message     string      `json:"message"`
-	IsError     error       `json:"error,omitempty"`
+	IsError     interface{} `json:"error,omitempty"`
 	Data        interface{} `json:"data,omitempty"`
 }
 
 func (res *Resp) Send(w http.ResponseWriter) {
 	w.Header().Set("Content-Type", "application/json")
 
-	if res.IsError != nil {
-		w.WriteHeader(res.Status)
-	}
+	w.WriteHeader(res.Status)
 
 	err := json.NewEncoder(w).Encode(res)
 	if err != nil {
@@ -32,7 +30,7 @@ func Response(data interface{}, status int, message string, isError error) *Resp
 			Status:      status,
 			Description: statusDescription(status),
 			Message:     message,
-			IsError:     isError,
+			IsError:     isError.Error(),
 			Data:        data,
 		}
 	}

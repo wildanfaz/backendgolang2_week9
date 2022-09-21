@@ -31,7 +31,7 @@ func (svc *vehicles_service) AddVehicle(body *models.Vehicle) *libs.Resp {
 		return libs.Response(nil, 400, "failed add data", err)
 	}
 
-	return libs.Response(nil, 200, "success add data", nil)
+	return libs.Response(nil, 201, "success add data", nil)
 }
 
 func (svc *vehicles_service) UpdateVehicle(vars string, body *models.Vehicle) *libs.Resp {
