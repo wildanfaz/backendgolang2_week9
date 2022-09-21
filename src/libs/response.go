@@ -9,7 +9,7 @@ type Resp struct {
 	Status      int         `json:"status"`
 	Description string      `json:"description"`
 	Message     string      `json:"message"`
-	IsError     error       `json:"error,emitempty"`
+	IsError     error       `json:"error,omitempty"`
 	Data        interface{} `json:"data,omitempty"`
 }
 
