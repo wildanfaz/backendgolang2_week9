@@ -7,9 +7,9 @@ import (
 type History struct {
 	HistoryId     uint      `gorm:"primaryKey" json:"history_id"`
 	VehicleId     uint      `json:"vehicle_id"`
-	Vehicle       Vehicle   `gorm:"foreignKey:VehicleId;references:VehicleId" json:"vehicle"`
+	Vehicle       Vehicle   `json:"vehicle"`
 	UserId        string    `gorm:"type:uuid" json:"user_id"`
-	User          User      `gorm:"foreignKey:UserId;references:UserId" json:"user"`
+	User          User      `json:"user"`
 	StartRental   string    `json:"start_rental"`
 	EndRental     string    `json:"end_rental"`
 	Prepayment    int       `json:"prepayment"`
