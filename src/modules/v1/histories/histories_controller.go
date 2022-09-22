@@ -7,6 +7,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/wildanfaz/backendgolang2_week9/src/database/orm/models"
 	"github.com/wildanfaz/backendgolang2_week9/src/interfaces"
+	"github.com/wildanfaz/backendgolang2_week9/src/libs"
 )
 
 type histories_ctrl struct {
@@ -22,9 +23,10 @@ func (ctrl *histories_ctrl) GetAllHistories(w http.ResponseWriter, r *http.Reque
 
 	if data.IsError != nil {
 		data.Send(w)
-	} else {
-		data.Send(w)
+		return
 	}
+
+	data.Send(w)
 }
 
 func (ctrl *histories_ctrl) AddHistory(w http.ResponseWriter, r *http.Request) {
@@ -32,16 +34,18 @@ func (ctrl *histories_ctrl) AddHistory(w http.ResponseWriter, r *http.Request) {
 
 	err := json.NewDecoder(r.Body).Decode(&datas)
 	if err != nil {
-
-	} else {
-		data := ctrl.svc.AddHistory(&datas)
-
-		if data.IsError != nil {
-			data.Send(w)
-		} else {
-			data.Send(w)
-		}
+		libs.Response(nil, 400, "failed to decode", err).Send(w)
+		return
 	}
+
+	data := ctrl.svc.AddHistory(&datas)
+
+	if data.IsError != nil {
+		data.Send(w)
+		return
+	}
+
+	data.Send(w)
 }
 
 func (ctrl *histories_ctrl) UpdateHistory(w http.ResponseWriter, r *http.Request) {
@@ -49,17 +53,18 @@ func (ctrl *histories_ctrl) UpdateHistory(w http.ResponseWriter, r *http.Request
 
 	err := json.NewDecoder(r.Body).Decode(&datas)
 	if err != nil {
-
-	} else {
-		vars := mux.Vars(r)
-		data := ctrl.svc.UpdateHistory(vars["history_id"], &datas)
-
-		if data.IsError != nil {
-			data.Send(w)
-		} else {
-			data.Send(w)
-		}
+		libs.Response(nil, 400, "failed to decode", err).Send(w)
+		return
 	}
+	vars := mux.Vars(r)
+	data := ctrl.svc.UpdateHistory(vars["history_id"], &datas)
+
+	if data.IsError != nil {
+		data.Send(w)
+		return
+	}
+
+	data.Send(w)
 }
 
 func (ctrl *histories_ctrl) DeleteHistory(w http.ResponseWriter, r *http.Request) {
@@ -70,9 +75,10 @@ func (ctrl *histories_ctrl) DeleteHistory(w http.ResponseWriter, r *http.Request
 
 	if data.IsError != nil {
 		data.Send(w)
-	} else {
-		data.Send(w)
+		return
 	}
+
+	data.Send(w)
 }
 
 func (ctrl *histories_ctrl) SearchHistory(w http.ResponseWriter, r *http.Request) {
@@ -81,7 +87,8 @@ func (ctrl *histories_ctrl) SearchHistory(w http.ResponseWriter, r *http.Request
 
 	if data.IsError != nil {
 		data.Send(w)
-	} else {
-		data.Send(w)
+		return
 	}
+
+	data.Send(w)
 }

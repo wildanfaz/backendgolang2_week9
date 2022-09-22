@@ -62,6 +62,16 @@ func (svc *users_service) DeleteUser(vars string, body *models.User) *libs.Resp 
 	return libs.Response(nil, 200, "success delete data", nil)
 }
 
+func (svc *users_service) GetUserByName(name string) *libs.Resp {
+	data, err := svc.repo.FindUserByName(name)
+
+	if err != nil {
+		return libs.Response(nil, 404, "failed get data", err)
+	}
+
+	return libs.Response(data, 200, "success get data", nil)
+}
+
 // func (re *users_service) SearchUser(r *http.Request) (*models.Users, error) {
 // 	data, err := re.repo.FindUser(r)
 

@@ -109,6 +109,26 @@ func (re *users_repo) RemoveUser(vars string, body *models.User) (*models.User, 
 	return body, nil
 }
 
+func (re *users_repo) FindUserByName(name string) (*models.User, error) {
+	var user models.User
+	var check int64
+
+	re.db.Model(&user).Where("name = ?", name).Count(&check)
+	checkName := check > 0
+
+	if checkName == false {
+		return nil, errors.New("name is not exists")
+	}
+
+	result := re.db.Where("name = ?", name).Find(&user)
+
+	if result.Error != nil {
+		return nil, errors.New("name is not exists")
+	}
+
+	return &user, nil
+}
+
 // func (re *users_repo) FindUser(r *http.Request) (*models.Users, error) {
 // 	var data models.Users
 

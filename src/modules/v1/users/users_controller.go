@@ -2,11 +2,13 @@ package users
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/gorilla/mux"
 	"github.com/wildanfaz/backendgolang2_week9/src/database/orm/models"
 	"github.com/wildanfaz/backendgolang2_week9/src/interfaces"
+	"github.com/wildanfaz/backendgolang2_week9/src/libs"
 )
 
 type users_ctrl struct {
@@ -18,13 +20,31 @@ func NewCtrl(svc interfaces.UsersService) *users_ctrl {
 }
 
 func (ctrl *users_ctrl) GetAllUsers(w http.ResponseWriter, r *http.Request) {
+	claims_users := r.Context().Value("name")
+	fmt.Println(claims_users.(string))
+
 	data := ctrl.svc.GetAllUsers()
 
 	if data.IsError != nil {
 		data.Send(w)
-	} else {
-		data.Send(w)
+		return
 	}
+
+	data.Send(w)
+}
+
+func (ctrl *users_ctrl) GetUser(w http.ResponseWriter, r *http.Request) {
+	claims_users := r.Context().Value("name")
+	fmt.Println(claims_users.(string))
+
+	data := ctrl.svc.GetUserByName(claims_users.(string))
+
+	if data.IsError != nil {
+		data.Send(w)
+		return
+	}
+
+	data.Send(w)
 }
 
 func (ctrl *users_ctrl) AddUser(w http.ResponseWriter, r *http.Request) {
@@ -32,16 +52,18 @@ func (ctrl *users_ctrl) AddUser(w http.ResponseWriter, r *http.Request) {
 
 	err := json.NewDecoder(r.Body).Decode(&datas)
 	if err != nil {
-
-	} else {
-		data := ctrl.svc.AddUser(&datas)
-
-		if data.IsError != nil {
-			data.Send(w)
-		} else {
-			data.Send(w)
-		}
+		libs.Response(nil, 400, "failed to decode", err).Send(w)
+		return
 	}
+
+	data := ctrl.svc.AddUser(&datas)
+	if data.IsError != nil {
+		data.Send(w)
+		return
+	}
+
+	data.Send(w)
+
 }
 
 func (ctrl *users_ctrl) UpdateUser(w http.ResponseWriter, r *http.Request) {
@@ -49,17 +71,19 @@ func (ctrl *users_ctrl) UpdateUser(w http.ResponseWriter, r *http.Request) {
 
 	err := json.NewDecoder(r.Body).Decode(&datas)
 	if err != nil {
-
-	} else {
-		vars := mux.Vars(r)
-		data := ctrl.svc.UpdateUser(vars["name"], &datas)
-
-		if data.IsError != nil {
-			data.Send(w)
-		} else {
-			data.Send(w)
-		}
+		libs.Response(nil, 400, "failed to decode", err).Send(w)
+		return
 	}
+
+	vars := mux.Vars(r)
+	data := ctrl.svc.UpdateUser(vars["name"], &datas)
+
+	if data.IsError != nil {
+		data.Send(w)
+		return
+	}
+
+	data.Send(w)
 }
 
 func (ctrl *users_ctrl) DeleteUser(w http.ResponseWriter, r *http.Request) {
@@ -71,18 +95,21 @@ func (ctrl *users_ctrl) DeleteUser(w http.ResponseWriter, r *http.Request) {
 
 	if data.IsError != nil {
 		data.Send(w)
-	} else {
-		data.Send(w)
+		return
 	}
+
+	data.Send(w)
 }
 
-// func (re *users_ctrl) SearchUser(w http.ResponseWriter, r *http.Request) {
-//
-// 	data, err := re.svc.SearchUser(r)
+func (ctrl *users_ctrl) GetUserByName(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
 
-// 	if err != nil {
-// 		http.Error(w, err.Error(), http.StatusBadRequest)
-// 	}
+	data := ctrl.svc.GetUserByName(vars["name"])
 
-// 	json.NewEncoder(w).Encode(data)
-// }
+	if data.IsError != nil {
+		data.Send(w)
+		return
+	}
+
+	data.Send(w)
+}

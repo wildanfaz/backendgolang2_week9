@@ -58,10 +58,10 @@ func (svc *vehicles_service) SearchVehicle(search string) *libs.Resp {
 	data, err := svc.repo.FindVehicle(search)
 
 	if err != nil {
-		return libs.Response(data, 400, "failed search data", err)
+		return libs.Response(data, 404, "failed search data", err)
 	}
 
-	return libs.Response(data, 200, "failed search data", nil)
+	return libs.Response(data, 200, "success search data", nil)
 }
 
 func (svc *vehicles_service) PopularVehicles() *libs.Resp {
@@ -71,5 +71,5 @@ func (svc *vehicles_service) PopularVehicles() *libs.Resp {
 		return libs.Response(data, 400, "failed get data", err)
 	}
 
-	return libs.Response(data, 200, "failed get data", nil)
+	return libs.Response(data, 200, "success get data", nil)
 }

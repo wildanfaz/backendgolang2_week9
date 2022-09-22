@@ -58,8 +58,8 @@ func (svc *histories_service) SearchHistory(search string) *libs.Resp {
 	data, err := svc.repo.FindHistory(search)
 
 	if err != nil {
-		return libs.Response(data, 400, "failed delete data", err)
+		return libs.Response(data, 404, "failed search data", err)
 	}
 
-	return libs.Response(data, 200, "success delete data", nil)
+	return libs.Response(data, 200, "success search data", nil)
 }
