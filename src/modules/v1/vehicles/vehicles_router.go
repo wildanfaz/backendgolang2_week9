@@ -17,7 +17,7 @@ func New(rt *mux.Router, db *gorm.DB) {
 	route.HandleFunc("/search", middleware.CheckAuth(ctrl.SearchVehicle, []string{"User", "Admin"})).Methods("GET")
 	route.HandleFunc("/popular", middleware.CheckAuth(ctrl.PopularVehicles, []string{"User", "Admin"})).Methods("GET")
 
-	route.HandleFunc("", middleware.CheckAuth(middleware.UploadFile(ctrl.AddVehicle), []string{"Admin"})).Methods("POST")
+	route.HandleFunc("", middleware.CheckAuth(middleware.UploadFile(ctrl.AddVehicle), []string{"User", "Admin"})).Methods("POST")
 
 	route.HandleFunc("/{vehicle_id}", middleware.CheckAuth(ctrl.UpdateVehicle, []string{"Admin"})).Methods("PUT")
 	route.HandleFunc("/{vehicle_id}", middleware.CheckAuth(ctrl.DeleteVehicle, []string{"Admin"})).Methods("DELETE")
