@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/ajg/form"
 	"github.com/gorilla/mux"
+	"github.com/gorilla/schema"
 	"github.com/wildanfaz/backendgolang2_week9/src/database/orm/models"
 	"github.com/wildanfaz/backendgolang2_week9/src/interfaces"
 	"github.com/wildanfaz/backendgolang2_week9/src/libs"
@@ -32,15 +32,14 @@ func (ctrl *vehicles_ctrl) GetAllVehicles(w http.ResponseWriter, r *http.Request
 }
 
 func (ctrl *vehicles_ctrl) AddVehicle(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/form")
 	var datas models.Vehicle
 
-	r.ParseForm()
-	fmt.Println(r.Form)
+	r.ParseMultipartForm(20)
+	fmt.Println(r.MultipartForm.Value)
 
-	dec := form.NewDecoder(r.Body)
-	if err := dec.Decode(&datas); err != nil {
-		libs.Response(nil, 400, "failed to decode", err).Send(w)
+	dec := schema.NewDecoder()
+	if err := dec.Decode(&datas, r.MultipartForm.Value); err != nil {
+		libs.Response(nil, 400, "failed to decode", err).SendForm(w)
 		return
 	}
 
@@ -48,11 +47,11 @@ func (ctrl *vehicles_ctrl) AddVehicle(w http.ResponseWriter, r *http.Request) {
 	data := ctrl.svc.AddVehicle(&datas)
 
 	if data.IsError != nil {
-		data.Send(w)
+		data.SendForm(w)
 		return
 	}
 
-	data.Send(w)
+	data.SendForm(w)
 }
 
 func (ctrl *vehicles_ctrl) UpdateVehicle(w http.ResponseWriter, r *http.Request) {
