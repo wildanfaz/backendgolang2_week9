@@ -8,9 +8,12 @@ import (
 	"github.com/wildanfaz/backendgolang2_week9/src/libs"
 )
 
-// func HandleMiddleware()
+type Result struct {
+	Upload interface{}
+	Data   interface{}
+}
 
-func CheckAuth(role []string, next http.HandlerFunc) http.HandlerFunc {
+func CheckAuth(role []string, next ...http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		headerToken := r.Header.Get("Authorization")
 
@@ -43,7 +46,13 @@ func CheckAuth(role []string, next http.HandlerFunc) http.HandlerFunc {
 
 		ctx := context.WithValue(r.Context(), "name", checkToken.Name)
 
-		next.ServeHTTP(w, r.WithContext(ctx))
+		if len(next) == 2 {
+			for i := 0; i < len(next); i++ {
+				next[i].ServeHTTP(w, r.WithContext(ctx))
+			}
+			return
+		}
 
+		next[0].ServeHTTP(w, r.WithContext(ctx))
 	}
 }

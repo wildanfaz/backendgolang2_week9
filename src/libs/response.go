@@ -3,6 +3,8 @@ package libs
 import (
 	"encoding/json"
 	"net/http"
+
+	"github.com/ajg/form"
 )
 
 type Resp struct {
@@ -17,6 +19,10 @@ func (res *Resp) Send(w http.ResponseWriter) {
 	w.Header().Set("Content-Type", "application/json")
 
 	w.WriteHeader(res.Status)
+
+	x, _ := form.EncodeToValues(res)
+	var c http.Client
+	c.PostForm("localhost:8080/api/v1/vehicles", x)
 
 	err := json.NewEncoder(w).Encode(res)
 	if err != nil {

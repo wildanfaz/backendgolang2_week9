@@ -2,8 +2,10 @@ package vehicles
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 
+	"github.com/ajg/form"
 	"github.com/gorilla/mux"
 	"github.com/wildanfaz/backendgolang2_week9/src/database/orm/models"
 	"github.com/wildanfaz/backendgolang2_week9/src/interfaces"
@@ -30,14 +32,19 @@ func (ctrl *vehicles_ctrl) GetAllVehicles(w http.ResponseWriter, r *http.Request
 }
 
 func (ctrl *vehicles_ctrl) AddVehicle(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/form")
 	var datas models.Vehicle
 
-	err := json.NewDecoder(r.Body).Decode(&datas)
-	if err != nil {
+	r.ParseForm()
+	fmt.Println(r.Form)
+
+	dec := form.NewDecoder(r.Body)
+	if err := dec.Decode(&datas); err != nil {
 		libs.Response(nil, 400, "failed to decode", err).Send(w)
 		return
 	}
 
+	fmt.Println(datas)
 	data := ctrl.svc.AddVehicle(&datas)
 
 	if data.IsError != nil {

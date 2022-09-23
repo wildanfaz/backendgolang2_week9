@@ -3,6 +3,9 @@ module github.com/wildanfaz/backendgolang2_week9
 go 1.18
 
 require (
+	github.com/ajg/form v1.5.1
+	github.com/go-gormigrate/gormigrate/v2 v2.0.2
+	github.com/golang-jwt/jwt/v4 v4.4.2
 	github.com/gorilla/mux v1.8.0
 	github.com/joho/godotenv v1.4.0
 	github.com/spf13/cobra v1.5.0
@@ -12,9 +15,7 @@ require (
 )
 
 require (
-	github.com/go-gormigrate/gormigrate/v2 v2.0.2 // indirect
-	github.com/golang-jwt/jwt/v4 v4.4.2 // indirect
-	github.com/inconshreveable/mousetrap v1.0.1 // indirect
+	github.com/inconshreveable/mousetrap v1.0.0 // indirect
 	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
 	github.com/jackc/pgconn v1.12.1 // indirect
 	github.com/jackc/pgio v1.0.0 // indirect
@@ -26,7 +27,5 @@ require (
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
-	github.com/stretchr/testify v1.7.1 // indirect
 	golang.org/x/text v0.3.7 // indirect
-	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b // indirect
 )
