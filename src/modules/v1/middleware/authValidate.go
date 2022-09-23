@@ -8,12 +8,12 @@ import (
 	"github.com/wildanfaz/backendgolang2_week9/src/libs"
 )
 
-type Result struct {
-	Upload interface{}
-	Data   interface{}
-}
+// type Result struct {
+// 	Upload interface{}
+// 	Data   interface{}
+// }
 
-func CheckAuth(role []string, next ...http.HandlerFunc) http.HandlerFunc {
+func CheckAuth(next http.HandlerFunc, role ...[]string) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		headerToken := r.Header.Get("Authorization")
 
@@ -32,7 +32,7 @@ func CheckAuth(role []string, next ...http.HandlerFunc) http.HandlerFunc {
 		}
 
 		var checkRole bool
-		for _, v := range role {
+		for _, v := range role[0] {
 			if strings.ToLower(v) == strings.ToLower(checkToken.Role) {
 				checkRole = true
 				break
@@ -46,13 +46,6 @@ func CheckAuth(role []string, next ...http.HandlerFunc) http.HandlerFunc {
 
 		ctx := context.WithValue(r.Context(), "name", checkToken.Name)
 
-		if len(next) == 2 {
-			for i := 0; i < len(next); i++ {
-				next[i].ServeHTTP(w, r.WithContext(ctx))
-			}
-			return
-		}
-
-		next[0].ServeHTTP(w, r.WithContext(ctx))
+		next.ServeHTTP(w, r.WithContext(ctx))
 	}
 }

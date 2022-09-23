@@ -2,7 +2,6 @@ package vehicles
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -35,23 +34,21 @@ func (ctrl *vehicles_ctrl) AddVehicle(w http.ResponseWriter, r *http.Request) {
 	var datas models.Vehicle
 
 	r.ParseMultipartForm(20)
-	fmt.Println(r.MultipartForm.Value)
 
 	dec := schema.NewDecoder()
 	if err := dec.Decode(&datas, r.MultipartForm.Value); err != nil {
-		libs.Response(nil, 400, "failed to decode", err).SendForm(w)
+		libs.Response(nil, 400, "failed to decode", err).Send(w)
 		return
 	}
 
-	fmt.Println(datas)
 	data := ctrl.svc.AddVehicle(&datas)
 
 	if data.IsError != nil {
-		data.SendForm(w)
+		data.Send(w)
 		return
 	}
 
-	data.SendForm(w)
+	data.Send(w)
 }
 
 func (ctrl *vehicles_ctrl) UpdateVehicle(w http.ResponseWriter, r *http.Request) {

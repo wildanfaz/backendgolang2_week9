@@ -24,13 +24,6 @@ func (res *Resp) Send(w http.ResponseWriter) {
 	}
 }
 
-func (res *Resp) SendForm(w http.ResponseWriter) {
-	w.Header().Set("Content-Type", "multipart/form-data")
-	w.WriteHeader(res.Status)
-
-	json.NewEncoder(w).Encode(res)
-}
-
 func Response(data interface{}, status int, message string, isError error) *Resp {
 	if isError != nil {
 		return &Resp{

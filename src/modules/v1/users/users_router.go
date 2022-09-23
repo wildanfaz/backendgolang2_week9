@@ -15,10 +15,10 @@ func New(rt *mux.Router, db *gorm.DB) {
 
 	//** unused get all users
 	// route.HandleFunc("", middleware.CheckAuth([]string{"Admin"}, ctrl.GetAllUsers)).Methods("GET")
-	route.HandleFunc("", middleware.CheckAuth([]string{"User", "Admin"}, ctrl.GetUser)).Methods("GET")
-	route.HandleFunc("/{name}", middleware.CheckAuth([]string{"Admin"}, ctrl.GetUserByName)).Methods("GET")
+	route.HandleFunc("", middleware.CheckAuth(ctrl.GetUser, []string{"User", "Admin"})).Methods("GET")
+	route.HandleFunc("/{name}", middleware.CheckAuth(ctrl.GetUserByName, []string{"Admin"})).Methods("GET")
 	//** register
 	route.HandleFunc("", ctrl.AddUser).Methods("POST")
-	route.HandleFunc("/{name}", middleware.CheckAuth([]string{"User", "Admin"}, ctrl.UpdateUser)).Methods("PUT")
-	route.HandleFunc("/{name}", middleware.CheckAuth([]string{"Admin"}, ctrl.DeleteUser)).Methods("DELETE")
+	route.HandleFunc("/{name}", middleware.CheckAuth(ctrl.UpdateUser, []string{"User", "Admin"})).Methods("PUT")
+	route.HandleFunc("/{name}", middleware.CheckAuth(ctrl.DeleteUser, []string{"Admin"})).Methods("DELETE")
 }
