@@ -2,6 +2,7 @@ package vehicles
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -33,6 +34,10 @@ func (ctrl *vehicles_ctrl) GetAllVehicles(w http.ResponseWriter, r *http.Request
 func (ctrl *vehicles_ctrl) AddVehicle(w http.ResponseWriter, r *http.Request) {
 	var datas models.Vehicle
 
+	imageName := r.Context().Value("imageName")
+
+	datas.Image = fmt.Sprint(imageName)
+
 	r.ParseMultipartForm(20)
 
 	dec := schema.NewDecoder()
@@ -40,6 +45,8 @@ func (ctrl *vehicles_ctrl) AddVehicle(w http.ResponseWriter, r *http.Request) {
 		libs.Response(nil, 400, "failed to decode", err).Send(w)
 		return
 	}
+
+	fmt.Println(r.MultipartForm.Value)
 
 	data := ctrl.svc.AddVehicle(&datas)
 

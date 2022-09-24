@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"context"
 	"fmt"
 	"io"
 	"net/http"
@@ -11,6 +12,7 @@ import (
 	"github.com/wildanfaz/backendgolang2_week9/src/libs"
 )
 
+//**img
 func UploadFile(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if isErr := r.ParseMultipartForm(20); isErr != nil {
@@ -44,6 +46,9 @@ func UploadFile(next http.HandlerFunc) http.HandlerFunc {
 		}
 
 		libs.Response(nil, 200, "success upload file", nil).Send(w)
-		next.ServeHTTP(w, r)
+
+		ctx := context.WithValue(r.Context(), "imageName", handlerFile.Filename)
+
+		next.ServeHTTP(w, r.WithContext(ctx))
 	}
 }
