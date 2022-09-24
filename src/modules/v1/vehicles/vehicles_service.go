@@ -51,7 +51,7 @@ func (svc *vehicles_service) DeleteVehicle(vars string, body *models.Vehicle) *l
 		return libs.Response(nil, 400, "failed delete data", err)
 	}
 
-	return libs.Response(nil, 200, "failed delete data", nil)
+	return libs.Response(nil, 200, "success delete data", nil)
 }
 
 func (svc *vehicles_service) SearchVehicle(search string) *libs.Resp {

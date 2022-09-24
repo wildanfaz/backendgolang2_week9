@@ -13,7 +13,7 @@ import (
 )
 
 //**img
-func UploadFile(next http.HandlerFunc) http.HandlerFunc {
+func UploadFileImage(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if isErr := r.ParseMultipartForm(20); isErr != nil {
 			libs.Response(nil, 400, "failed parse form", isErr).Send(w)
@@ -29,8 +29,16 @@ func UploadFile(next http.HandlerFunc) http.HandlerFunc {
 			return
 		}
 
+		checkType := handlerFile.Header.Get("Content-Type") == "image/jpeg" || handlerFile.Header.Get("Content-Type") == "image/jpg" || handlerFile.Header.Get("Content-Type") == "image/png"
+
+		if !checkType {
+			libs.Response(nil, 400, "invalid file format, only support image file", err).Send(w)
+			return
+		}
+
 		//**check
-		fmt.Println(handlerFile.Filename, handlerFile.Header, handlerFile.Size)
+		// handlerFile.Header.
+		fmt.Println(handlerFile.Header.Get("Content-Type"))
 
 		name := strings.ReplaceAll(time.Now().Format(time.UnixDate), ":", "-") + handlerFile.Filename
 		result, errs := os.Create("images/" + name)
