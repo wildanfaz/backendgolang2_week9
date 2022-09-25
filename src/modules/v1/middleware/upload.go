@@ -15,14 +15,15 @@ import (
 //**img
 func UploadFileImage(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		if isErr := r.ParseMultipartForm(20); isErr != nil {
-			libs.Response(nil, 400, "failed parse form", isErr).Send(w)
-			return
-		}
+		//** limit size
+		// if isErr := r.ParseMultipartForm(20 << 20); isErr != nil {
+		// 	libs.Response(nil, 400, "failed parse form", isErr).Send(w)
+		// 	return
+		// }
 
 		file, handlerFile, err := r.FormFile("image")
 
-		defer file.Close()
+		// defer file.Close()
 
 		if err != nil {
 			libs.Response(nil, 400, "failed to upload file", err).Send(w)
