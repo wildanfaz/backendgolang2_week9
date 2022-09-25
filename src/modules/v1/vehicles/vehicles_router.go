@@ -13,15 +13,15 @@ func New(rt *mux.Router, db *gorm.DB) {
 	svc := NewService(repo)
 	ctrl := NewCtrl(svc)
 
-	route.HandleFunc("", middleware.CheckAuth(ctrl.GetAllVehicles, []string{"User", "Admin"})).Methods("GET")
-	route.HandleFunc("/search", middleware.CheckAuth(ctrl.SearchVehicle, []string{"User", "Admin"})).Methods("GET")
-	route.HandleFunc("/popular", middleware.CheckAuth(ctrl.PopularVehicles, []string{"User", "Admin"})).Methods("GET")
+	route.HandleFunc("", middleware.HandlerChain(middleware.UserAdmin, middleware.CheckAuth).Then(ctrl.GetAllVehicles)).Methods("GET")
+	route.HandleFunc("/search", middleware.HandlerChain(middleware.UserAdmin, middleware.CheckAuth).Then(ctrl.SearchVehicle)).Methods("GET")
+	route.HandleFunc("/popular", middleware.HandlerChain(middleware.UserAdmin, middleware.CheckAuth).Then(ctrl.PopularVehicles)).Methods("GET")
 
-	route.HandleFunc("", middleware.CheckAuth(middleware.UploadFileImage(ctrl.AddVehicle), []string{"User", "Admin"})).Methods("POST")
+	route.HandleFunc("", middleware.HandlerChain(middleware.Admin, middleware.CheckAuth, middleware.UploadFileImage).Then(ctrl.AddVehicle)).Methods("POST")
 
-	route.HandleFunc("/{vehicle_id}", middleware.CheckAuth(ctrl.UpdateVehicle, []string{"Admin"})).Methods("PUT")
-	route.HandleFunc("/{vehicle_id}", middleware.CheckAuth(ctrl.DeleteVehicle, []string{"Admin"})).Methods("DELETE")
+	route.HandleFunc("/{vehicle_id}", middleware.HandlerChain(middleware.Admin, middleware.CheckAuth).Then(ctrl.UpdateVehicle)).Methods("PUT")
+	route.HandleFunc("/{vehicle_id}", middleware.HandlerChain(middleware.Admin, middleware.CheckAuth).Then(ctrl.DeleteVehicle)).Methods("DELETE")
 
 	//**example
-	route.HandleFunc("/v", middleware.HandlerChain(middleware.Hello, middleware.UploadFileImage).Then(ctrl.AddVehicle)).Methods("POST")
+	route.HandleFunc("/v", middleware.HandlerChain(middleware.UserAdmin, middleware.CheckAuth, middleware.Hello, middleware.UploadFileImage).Then(ctrl.AddVehicle)).Methods("POST")
 }

@@ -2,13 +2,14 @@ package middleware
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"strings"
 
 	"github.com/wildanfaz/backendgolang2_week9/src/libs"
 )
 
-func CheckAuth(next http.HandlerFunc, role []string) http.HandlerFunc {
+func CheckAuth(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		headerToken := r.Header.Get("Authorization")
 
@@ -26,8 +27,10 @@ func CheckAuth(next http.HandlerFunc, role []string) http.HandlerFunc {
 			return
 		}
 
+		res := Roles(r)
+		roles := fmt.Sprint(res)
 		var checkRole bool
-		for _, v := range role {
+		for _, v := range strings.Split(roles, " ") {
 			if strings.ToLower(v) == strings.ToLower(checkToken.Role) {
 				checkRole = true
 				break
@@ -42,5 +45,17 @@ func CheckAuth(next http.HandlerFunc, role []string) http.HandlerFunc {
 		ctx := context.WithValue(r.Context(), "name", checkToken.Name)
 
 		next.ServeHTTP(w, r.WithContext(ctx))
+	}
+}
+
+func Roles(r *http.Request) interface{} {
+	if roles := r.Context().Value("userAdmin"); roles != nil {
+		return roles
+	} else if roles := r.Context().Value("user"); roles != nil {
+		return roles
+	} else if roles := r.Context().Value("admin"); roles != nil {
+		return roles
+	} else {
+		return nil
 	}
 }
