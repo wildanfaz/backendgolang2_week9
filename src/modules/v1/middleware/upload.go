@@ -23,7 +23,7 @@ func UploadFileImage(next http.HandlerFunc) http.HandlerFunc {
 
 		file, handlerFile, err := r.FormFile("image")
 
-		// defer file.Close()
+		defer file.Close()
 
 		if err != nil {
 			libs.Response(nil, 400, "failed to upload file", err).Send(w)
