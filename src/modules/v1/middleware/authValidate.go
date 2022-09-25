@@ -8,11 +8,6 @@ import (
 	"github.com/wildanfaz/backendgolang2_week9/src/libs"
 )
 
-// type Result struct {
-// 	Upload interface{}
-// 	Data   interface{}
-// }
-
 func CheckAuth(next http.HandlerFunc, role ...[]string) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		headerToken := r.Header.Get("Authorization")
