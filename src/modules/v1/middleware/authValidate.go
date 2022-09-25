@@ -8,7 +8,7 @@ import (
 	"github.com/wildanfaz/backendgolang2_week9/src/libs"
 )
 
-func CheckAuth(next http.HandlerFunc, role ...[]string) http.HandlerFunc {
+func CheckAuth(next http.HandlerFunc, role []string) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		headerToken := r.Header.Get("Authorization")
 
@@ -27,7 +27,7 @@ func CheckAuth(next http.HandlerFunc, role ...[]string) http.HandlerFunc {
 		}
 
 		var checkRole bool
-		for _, v := range role[0] {
+		for _, v := range role {
 			if strings.ToLower(v) == strings.ToLower(checkToken.Role) {
 				checkRole = true
 				break
