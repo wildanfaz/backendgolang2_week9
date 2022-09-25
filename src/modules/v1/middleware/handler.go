@@ -9,7 +9,6 @@ type Middleware func(http.HandlerFunc) http.HandlerFunc
 type Chain []Middleware
 
 func HandlerChain(m ...Middleware) Chain {
-
 	var slice Chain
 	return append(slice, m...)
 }
