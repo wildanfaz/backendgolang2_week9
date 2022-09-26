@@ -13,9 +13,9 @@ func New(rt *mux.Router, db *gorm.DB) {
 	svc := NewService(repo)
 	ctrl := NewCtrl(svc)
 
-	route.HandleFunc("", middleware.HandlerChain(middleware.UserAdmin, middleware.CheckAuth).Then(ctrl.GetAllHistories)).Methods("GET")
-	route.HandleFunc("/search", middleware.HandlerChain(middleware.UserAdmin, middleware.CheckAuth).Then(ctrl.SearchHistory)).Methods("GET")
-	route.HandleFunc("", middleware.HandlerChain(middleware.UserAdmin, middleware.CheckAuth).Then(ctrl.AddHistory)).Methods("POST")
-	route.HandleFunc("/{history_id}", middleware.HandlerChain(middleware.Admin, middleware.CheckAuth).Then(ctrl.UpdateHistory)).Methods("PUT")
-	route.HandleFunc("/{history_id}", middleware.HandlerChain(middleware.Admin, middleware.CheckAuth).Then(ctrl.DeleteHistory)).Methods("DELETE")
+	route.HandleFunc("", middleware.HandlerChain(middleware.CheckAuth("User", "Admin")).Then(ctrl.GetAllHistories)).Methods("GET")
+	route.HandleFunc("/search", middleware.HandlerChain(middleware.CheckAuth("User", "Admin")).Then(ctrl.SearchHistory)).Methods("GET")
+	route.HandleFunc("", middleware.HandlerChain(middleware.CheckAuth("User", "Admin")).Then(ctrl.AddHistory)).Methods("POST")
+	route.HandleFunc("/{history_id}", middleware.HandlerChain(middleware.CheckAuth("Admin")).Then(ctrl.UpdateHistory)).Methods("PUT")
+	route.HandleFunc("/{history_id}", middleware.HandlerChain(middleware.CheckAuth("Admin")).Then(ctrl.DeleteHistory)).Methods("DELETE")
 }

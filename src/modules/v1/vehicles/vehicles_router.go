@@ -13,15 +13,15 @@ func New(rt *mux.Router, db *gorm.DB) {
 	svc := NewService(repo)
 	ctrl := NewCtrl(svc)
 
-	route.HandleFunc("", middleware.HandlerChain(middleware.UserAdmin, middleware.CheckAuth).Then(ctrl.GetAllVehicles)).Methods("GET")
-	route.HandleFunc("/search", middleware.HandlerChain(middleware.UserAdmin, middleware.CheckAuth).Then(ctrl.SearchVehicle)).Methods("GET")
-	route.HandleFunc("/popular", middleware.HandlerChain(middleware.UserAdmin, middleware.CheckAuth).Then(ctrl.PopularVehicles)).Methods("GET")
+	route.HandleFunc("", middleware.HandlerChain(middleware.CheckAuth("User", "Admin")).Then(ctrl.GetAllVehicles)).Methods("GET")
+	route.HandleFunc("/search", middleware.HandlerChain(middleware.CheckAuth("User", "Admin")).Then(ctrl.SearchVehicle)).Methods("GET")
+	route.HandleFunc("/popular", middleware.HandlerChain(middleware.CheckAuth("User", "Admin")).Then(ctrl.PopularVehicles)).Methods("GET")
 
-	route.HandleFunc("", middleware.HandlerChain(middleware.Admin, middleware.CheckAuth, middleware.UploadFileImage).Then(ctrl.AddVehicle)).Methods("POST")
+	route.HandleFunc("", middleware.HandlerChain(middleware.CheckAuth("Admin"), middleware.UploadFileImage).Then(ctrl.AddVehicle)).Methods("POST")
 
-	route.HandleFunc("/{vehicle_id}", middleware.HandlerChain(middleware.Admin, middleware.CheckAuth).Then(ctrl.UpdateVehicle)).Methods("PUT")
-	route.HandleFunc("/{vehicle_id}", middleware.HandlerChain(middleware.Admin, middleware.CheckAuth).Then(ctrl.DeleteVehicle)).Methods("DELETE")
+	route.HandleFunc("/{vehicle_id}", middleware.HandlerChain(middleware.CheckAuth("User", "Admin")).Then(ctrl.UpdateVehicle)).Methods("PUT")
+	route.HandleFunc("/{vehicle_id}", middleware.HandlerChain(middleware.CheckAuth("Admin")).Then(ctrl.DeleteVehicle)).Methods("DELETE")
 
 	//**test chain midlleware
-	route.HandleFunc("/v", middleware.HandlerChain(middleware.UserAdmin, middleware.CheckAuth, middleware.Hello, middleware.UploadFileImage).Then(ctrl.AddVehicle)).Methods("POST")
+	route.HandleFunc("/v", middleware.HandlerChain(middleware.CheckAuth("User"), middleware.Hello, middleware.UploadFileImage).Then(ctrl.AddVehicle)).Methods("POST")
 }

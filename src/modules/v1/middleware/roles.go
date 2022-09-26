@@ -1,17 +1,12 @@
 package middleware
 
-import (
-	"context"
-	"net/http"
-)
+// func UserAdmin(next http.HandlerFunc) http.HandlerFunc {
+// 	return func(w http.ResponseWriter, r *http.Request) {
+// 		roles := context.WithValue(r.Context(), "userAdmin", "User Admin")
 
-func UserAdmin(next http.HandlerFunc) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		roles := context.WithValue(r.Context(), "userAdmin", "User Admin")
-
-		next.ServeHTTP(w, r.WithContext(roles))
-	}
-}
+// 		next.ServeHTTP(w, r.WithContext(roles))
+// 	}
+// }
 
 // func User(next http.HandlerFunc) http.HandlerFunc {
 // 	return func(w http.ResponseWriter, r *http.Request) {
@@ -21,10 +16,10 @@ func UserAdmin(next http.HandlerFunc) http.HandlerFunc {
 // 	}
 // }
 
-func Admin(next http.HandlerFunc) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		roles := context.WithValue(r.Context(), "userAdmin", "Admin")
+// func Admin(next http.HandlerFunc) http.HandlerFunc {
+// 	return func(w http.ResponseWriter, r *http.Request) {
+// 		roles := context.WithValue(r.Context(), "userAdmin", "Admin")
 
-		next.ServeHTTP(w, r.WithContext(roles))
-	}
-}
+// 		next.ServeHTTP(w, r.WithContext(roles))
+// 	}
+// }
