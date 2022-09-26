@@ -19,7 +19,7 @@ func New(rt *mux.Router, db *gorm.DB) {
 
 	route.HandleFunc("", middleware.HandlerChain(middleware.CheckAuth("Admin"), middleware.UploadFileImage).Then(ctrl.AddVehicle)).Methods("POST")
 
-	route.HandleFunc("/{vehicle_id}", middleware.HandlerChain(middleware.CheckAuth("User", "Admin")).Then(ctrl.UpdateVehicle)).Methods("PUT")
+	route.HandleFunc("/{vehicle_id}", middleware.HandlerChain(middleware.CheckAuth("Admin")).Then(ctrl.UpdateVehicle)).Methods("PUT")
 	route.HandleFunc("/{vehicle_id}", middleware.HandlerChain(middleware.CheckAuth("Admin")).Then(ctrl.DeleteVehicle)).Methods("DELETE")
 
 	//**test chain midlleware
