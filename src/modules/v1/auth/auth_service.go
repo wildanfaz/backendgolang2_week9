@@ -11,8 +11,8 @@ type auth_service struct {
 }
 
 type token_response struct {
-	Token string `json:"token"`
 	Role  string `json:"role"`
+	Token string `json:"token"`
 }
 
 func NewService(repo interfaces.UsersRepo) *auth_service {
@@ -37,5 +37,5 @@ func (auth *auth_service) Login(body models.User) *libs.Resp {
 		return libs.Response(nil, 401, "failed create token", err)
 	}
 
-	return libs.Response(token_response{Token: theToken, Role: user.Role}, 200, "token created", nil)
+	return libs.Response(token_response{Role: user.Role, Token: theToken}, 200, "token created", nil)
 }
