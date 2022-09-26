@@ -30,6 +30,7 @@ func UploadFileImage(next http.HandlerFunc) http.HandlerFunc {
 			return
 		}
 
+		//**file validation
 		checkType := handlerFile.Header.Get("Content-Type") == "image/jpeg" || handlerFile.Header.Get("Content-Type") == "image/jpg" || handlerFile.Header.Get("Content-Type") == "image/png"
 
 		if !checkType {
