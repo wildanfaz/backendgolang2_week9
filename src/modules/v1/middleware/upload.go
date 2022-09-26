@@ -41,7 +41,7 @@ func UploadFileImage(next http.HandlerFunc) http.HandlerFunc {
 		// handlerFile.Header.
 		fmt.Println(handlerFile.Header.Get("Content-Type"))
 
-		name := strings.ReplaceAll(time.Now().Format(time.UnixDate), ":", "-") + handlerFile.Filename
+		name := strings.ReplaceAll(strings.ReplaceAll(time.Now().Format(time.ANSIC), ":", "-")+"-"+handlerFile.Filename, " ", "_")
 		result, errs := os.Create("images/" + name)
 
 		if errs != nil {
@@ -56,7 +56,7 @@ func UploadFileImage(next http.HandlerFunc) http.HandlerFunc {
 
 		libs.Response(nil, 200, "success upload file", nil).Send(w)
 
-		ctx := context.WithValue(r.Context(), "imageName", handlerFile.Filename)
+		ctx := context.WithValue(r.Context(), "imageName", name)
 
 		next.ServeHTTP(w, r.WithContext(ctx))
 	}
