@@ -15,6 +15,7 @@ type claims struct {
 	jwt.StandardClaims
 }
 
+//**payload
 func NewToken(name, role string) *claims {
 	return &claims{
 		Name: name,
