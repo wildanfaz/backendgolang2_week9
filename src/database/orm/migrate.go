@@ -47,7 +47,7 @@ func dbMigrate(cmd *cobra.Command, args []string) error {
 			return err
 		}
 		log.Println("migration successfully")
-		return nil
+		// return nil
 	}
 
 	if migDown {
@@ -55,7 +55,7 @@ func dbMigrate(cmd *cobra.Command, args []string) error {
 			return err
 		}
 		log.Println("rollback successfully")
-		return nil
+		// return nil
 	}
 
 	log.Println("init schema database successfully")
