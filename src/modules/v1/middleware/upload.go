@@ -39,7 +39,7 @@ func UploadFileImage(next http.HandlerFunc) http.HandlerFunc {
 		}
 
 		//**check
-		// handlerFile.Header.
+		// handlerFile.Header
 		fmt.Println(handlerFile.Header.Get("Content-Type"))
 
 		name := strings.ReplaceAll(strings.ReplaceAll(time.Now().Format(time.ANSIC), ":", "-")+"-"+handlerFile.Filename, " ", "_")
