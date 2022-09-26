@@ -14,6 +14,7 @@ func HandlerChain(m ...Middleware) Chain {
 }
 
 func (c Chain) Then(lastHandler http.HandlerFunc) http.HandlerFunc {
+	//**expected mid1(mid2(mid3(handlerFunc)))
 	for i := range c {
 		lastHandler = c[len(c)-1-i](lastHandler)
 	}
