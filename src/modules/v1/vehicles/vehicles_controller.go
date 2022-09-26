@@ -40,6 +40,7 @@ func (ctrl *vehicles_ctrl) AddVehicle(w http.ResponseWriter, r *http.Request) {
 
 	// r.ParseMultipartForm(20 << 20)
 
+	//**decode from multipart/form-data
 	if err := schema.NewDecoder().Decode(&datas, r.MultipartForm.Value); err != nil {
 		libs.Response(nil, 400, "failed to decode", err).Send(w)
 		return
