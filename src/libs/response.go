@@ -2,6 +2,7 @@ package libs
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 )
 
@@ -17,7 +18,12 @@ func (res *Resp) Send(w http.ResponseWriter) {
 	w.Header().Set("Access-Control-Allow-Origin", "http://localhost:8080")
 	w.Header().Set("Access-Control-Allow-Methods", "*")
 	w.Header().Set("Access-Control-Allow-Headers", "*")
-	w.Header().Set("Content-Type", "application/json")
+
+	if header := fmt.Sprint(res.Data); header == "multipart/form-data" {
+		w.Header().Set("Content-Type", "multipart/form-data")
+	} else {
+		w.Header().Set("Content-Type", "application/json")
+	}
 
 	w.WriteHeader(res.Status)
 
