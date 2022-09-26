@@ -22,11 +22,11 @@ func (auth *auth_service) Login(body models.User) *libs.Resp {
 	user, err := auth.repo.FindUserByName(body.Name)
 
 	if err != nil {
-		return libs.Response(nil, 401, "failed create token", err)
+		return libs.Response(nil, 401, "incorrect name", err)
 	}
 
 	if err := libs.CheckPassword(user.Password, body.Password); err != nil {
-		return libs.Response(nil, 401, "password incorrect", err)
+		return libs.Response(nil, 401, "incorrect password", err)
 	}
 
 	token := libs.NewToken(body.Name, user.Role)
